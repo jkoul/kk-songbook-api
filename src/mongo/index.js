@@ -1,8 +1,8 @@
 const { MongoClient } = require('mongodb')
 
-const { DB_USER, DB_PASS, NODE_ENV } = process.env
+const { DB_USER, DB_PASS, DB_URL, DB_PORT, NODE_ENV } = process.env
 // Connection url
-const dbUrl = 'localhost:27017'
+const dbUrl = `${DB_URL}:${DB_PORT}`
 const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${dbUrl}` : `mongodb://${dbUrl}`
 const dbName = 'kostumeKaraoke'
 
