@@ -1,29 +1,10 @@
-const { ObjectId } = require('mongodb')
-const { ApolloServer, gql } = require('apollo-server-express')
-const { getCollection } = require('../mongo')
+const { ApolloServer } = require('apollo-server-express')
+const schema = require('./data/schema')
+const resolvers = require('./data/resolvers')
 
-// Construct a schema, using GraphQL schema language
-const typeDefs = gql`
-  type Query {
-    songs: [Song]!
-    song(id: ID): Song
-  }
+const server = new ApolloServer({
+  typeDefs: schema,
+  resolvers
+})
 
-  type Song {
-    _id: ID!
-    title: String
-    artist: String
-  }
-`
-
-// Provide resolver functions for your schema fields
-const resolvers = {
-  Query: {
-    songs: async () => await getCollection('songs'),
-    song: async (_, { id }) => {
-      return await getCollection('songs', { _id: ObjectId(id) })
-    }
-  },
-}
-
-module.exports = new ApolloServer({ typeDefs, resolvers })
+module.exports = server
