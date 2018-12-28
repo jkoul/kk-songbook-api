@@ -10,10 +10,7 @@ const getCollection = async (colName, query) => {
   try {
     client = await MongoClient.connect(connectionString, { useNewUrlParser: true })
     const db = client.db(DB_NAME)
-    console.log('query', query)
-    const test = await db.collection(colName).find(query || {}).toArray()
-    console.log('test', test)
-    return test
+    return await db.collection(colName).find(query || {}).toArray()
   } finally {
     client.close()
   }

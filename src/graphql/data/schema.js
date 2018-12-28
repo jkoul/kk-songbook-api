@@ -4,7 +4,6 @@ const { gql } = require('apollo-server-express')
 const schema = gql`
   type Query {
     songs: [Song]!
-    song(id: ID): [Song]
   }
 
   type Song {
