@@ -1,11 +1,9 @@
-const path = require('path')
-const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
-const logger = require('winston')
 const express = require('express')
 const server = require('./graphql')
+const logger = require('./logger')
 
 const app = express()
 server.applyMiddleware({ app })
@@ -14,9 +12,6 @@ app.use(cors())
 app.use(helmet())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-// app.use(favicon(path.join(app.get('public'), 'favicon.ico')))
-// Host the public folder
-// app.use('/', express.static(app.get('public')))
 
 // Catch 404 and forward to error handler
 app.use((req, res) => {

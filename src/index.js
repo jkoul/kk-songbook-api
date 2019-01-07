@@ -1,7 +1,6 @@
-require('dotenv-safe').config()
+require('dotenv-safe').config({ allowEmptyValues: true })
 const app = require('./app')
+const logger = require('./logger')
 
 const port = process.env.PORT
-app.listen({ port }, () => {
-  console.log(`Apollo Server on http://localhost:${port}/graphql`)
-})
+app.listen(port, () => logger.info(`Apollo Server on http://localhost:${port}/graphql`))
