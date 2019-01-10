@@ -8,8 +8,8 @@ const schema = gql`
   }
 
   type Query {
-    songs(sort: SortInput): [Song]!
-    song(id: ID): Song
+    songs(title: String, sort: [SortInput]): [Song]!
+    song(id: ID, title: String): Song
   }
 
   type Song {
