@@ -1,19 +1,17 @@
-const { ObjectId } = require('mongodb')
-const { getCollection } = require('../../mongo')
+const { getCollection, getSort, getQuery } = require('../../mongo')
 
 // Provide resolver functions for your schema fields
 const resolvers = {
   Query: {
-    songs: async (root, { title, sort }) => {
-      const query = title ? { title: { $regex: new RegExp(title, 'g') } } : {}
-      let sortBlock = {}
-      sort.forEach((s) => {
-        sortBlock[s.field] = s.order
-      })
+    songs: async (root, { sort, ...args }) => {
+      const query = getQuery({ ...args })
+      const sortBlock = getSort(sort)
+
       return await getCollection('songs', query, false, sortBlock)
     },
-    song: async (root, { id, title }) => {
-      const query = id ? { _id: ObjectId(id) } : { title: { $regex: new RegExp(title, 'g') } }
+    song: async (root, { id, ...args }) => {
+      const query = getQuery({ id, ...args })
+
       return await getCollection('songs', query, true)
     }
   },
