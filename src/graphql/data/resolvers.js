@@ -11,7 +11,7 @@ const resolvers = {
     },
     song: async (root, { id, ...args }) => {
       const query = getQuery({ id, ...args })
-
+      
       return await getCollection('songs', query, true)
     }
   },

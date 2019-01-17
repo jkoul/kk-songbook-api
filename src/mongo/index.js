@@ -1,4 +1,5 @@
 const { MongoClient, ObjectId } = require('mongodb')
+const logger = require('../logger')
 
 const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME, NODE_ENV } = process.env
 // Connection url
@@ -16,7 +17,7 @@ const getCollection = async (colName, query, isOne=false, sort) => {
     const collection = db.collection(colName).find(query || {})
     return sort ? await collection.sort(sort).toArray() : await collection.toArray()
   } catch (e) {
-    console.log('error', e)
+    logger.error('error', e)
   } finally {
     client.close()
   }
@@ -24,13 +25,11 @@ const getCollection = async (colName, query, isOne=false, sort) => {
 
 const getQuery = (args) => {
   const { id, ...rest } = args
-  let query = {}
   if (id) {
-    query = { _id: ObjectId(id) }
+    return { _id: ObjectId(id) }
   }
   const key = Object.keys(rest)[0]
   return {
-    ...query,
     [key]: { $regex: new RegExp(rest[key], 'g') }
   }
 }
