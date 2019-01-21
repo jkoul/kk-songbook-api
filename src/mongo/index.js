@@ -28,10 +28,13 @@ const getQuery = (args) => {
   if (id) {
     return { _id: ObjectId(id) }
   }
-  const key = Object.keys(rest)[0]
-  return {
-    [key]: { $regex: new RegExp(rest[key], 'g') }
+  if (rest.length > 0) {
+    const key = Object.keys(rest)[0]
+    return {
+      [key]: { $regex: new RegExp(rest[key], 'g') }
+    }
   }
+  return null
 }
 
 const getSort = (sort) => {
