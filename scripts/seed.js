@@ -2,13 +2,13 @@ require('dotenv-safe').config({ allowEmptyValues: true })
 
 const mi = require('mongoimport')
 const winston = require('../src/logger')
-const songsSample = require('./songs-sample.json')
+const initialSongs = require('./kksongbookNov2018.json')
 
 const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME } = process.env
 
 try {
   mi({
-    fields: songsSample,
+    fields: initialSongs,
     db: DB_NAME,
     collection: 'songs',
     host: `${DB_URL}:${DB_PORT}`,
