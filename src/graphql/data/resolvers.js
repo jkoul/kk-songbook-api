@@ -1,7 +1,7 @@
 const { getCollection, getSort, getQuery } = require('../../mongo')
 
 // Provide resolver functions for your schema fields
-const resolvers = {
+module.exports = {
   Query: {
     songs: async (root, { sort, ...args }) => {
       const query = getQuery({ ...args })
@@ -16,5 +16,3 @@ const resolvers = {
     }
   },
 }
-
-module.exports = resolvers

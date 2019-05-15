@@ -15,7 +15,7 @@ try {
     username: DB_USER,
     password: DB_PASS,
   })
-  winston.info('Successfully import song file')
+  winston.info('Successfully imported song file')
 } catch (e) {
   winston.error('Failed to import song file')
 }
