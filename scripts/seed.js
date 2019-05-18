@@ -1,13 +1,13 @@
-
 const mi = require('mongoimport')
 const { MongoClient } = require('mongodb')
 const { info, error } =  require('../src/logger')
 const initialSongs = require('./kksongbookNov2018.json')
 
-// const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME, NODE_ENV } = process.env
+const { hostname = 'localhost', port = 27017 } = process.env
+
 // Connection url
-const dbUrl = 'mongodb://localhost:27017/kostumeKaraoke'
-// const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${dbUrl}` : `mongodb://${dbUrl}`
+const host = `${hostname}:${port}`
+const dbUrl = `mongodb://${host}/kostumeKaraoke`
 
 // make client connect to mongo service
 MongoClient.connect(dbUrl, (err, db) => {
@@ -21,7 +21,7 @@ MongoClient.connect(dbUrl, (err, db) => {
     fields: initialSongs,
     db: 'kostumeKaraoke',
     collection: 'songs',
-    host: 'localhost:27017',
+    host,
     callback: (err) => {
       if (err) {
         error('Failed to import song file')
