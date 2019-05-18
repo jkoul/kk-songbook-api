@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb')
 const { info, error } =  require('../src/logger')
 const initialSongs = require('./kksongbookNov2018.json')
 
+// Have defaults if no args passed
 const { hostname = 'localhost', port = 27017 } = process.env
 
 // Connection url
