@@ -1,21 +1,36 @@
-require('dotenv-safe').config({ allowEmptyValues: true })
 
 const mi = require('mongoimport')
-const winston = require('../src/logger')
+const { MongoClient } = require('mongodb')
+const { info, error } =  require('../src/logger')
 const initialSongs = require('./kksongbookNov2018.json')
 
-const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME } = process.env
+// const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME, NODE_ENV } = process.env
+// Connection url
+const dbUrl = 'mongodb://localhost:27017/kostumeKaraoke'
+// const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${dbUrl}` : `mongodb://${dbUrl}`
 
-try {
+// make client connect to mongo service
+MongoClient.connect(dbUrl, (err, db) => {
+  if (err) {
+    error(err)
+    throw err
+  }
+  info('Database created!')
+
   mi({
     fields: initialSongs,
-    db: DB_NAME,
+    db: 'kostumeKaraoke',
     collection: 'songs',
-    host: `${DB_URL}:${DB_PORT}`,
-    username: DB_USER,
-    password: DB_PASS,
+    host: 'localhost:27017',
+    callback: (err) => {
+      if (err) {
+        error('Failed to import song file')
+        error(err)
+        db.close()
+        throw err
+      }
+      info('Successfully imported song file')
+      db.close()
+    }
   })
-  winston.info('Successfully imported song file')
-} catch (e) {
-  winston.error('Failed to import song file')
-}
+})
