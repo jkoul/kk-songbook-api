@@ -1,16 +1,16 @@
 const { MongoClient, ObjectId } = require('mongodb')
 const logger = require('../logger')
 
-const { DB_USER, DB_PASS, DB_URL, DB_PORT, DB_NAME, NODE_ENV } = process.env
+const { DB_USER, DB_PASS, DB_URL, DB_NAME, NODE_ENV } = process.env
 // Connection url
-const dbUrl = `${DB_URL}:${DB_PORT}`
-const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${dbUrl}` : `mongodb://${dbUrl}`
+const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${DB_URL}` : `mongodb://${DB_URL}`
 
 const getCollection = async (colName, query, isOne=false, sort) => {
   let client
   try {
     client = await MongoClient.connect(connectionString, { useNewUrlParser: true })
     const db = client.db(DB_NAME)
+
     if (isOne) {
       return await db.collection(colName).findOne(query)
     }

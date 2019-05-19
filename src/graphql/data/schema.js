@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server-express')
 
 // Construct a schema, using GraphQL schema language
-const schema = gql`
+module.exports = gql`
   input SortInput {
     field: String,
     order: Int,
@@ -20,5 +20,3 @@ const schema = gql`
     notes: String
   }
 `
-
-module.exports = schema
