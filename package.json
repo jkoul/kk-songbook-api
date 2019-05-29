@@ -48,6 +48,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.0.1",
     "casual": "^1.6.0",
     "eslint": "^5.16.0",
     "eslint-plugin-import": "^2.17.2",
@@ -79,6 +80,7 @@
       "!src/components/themes/*.js",
       "!src/store/{configure,reducer,sagas}.js",
       "!<rootDir>/node_modules"
-    ]
+    ],
+    "preset": "@shelf/jest-mongodb"
   }
 }

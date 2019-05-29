@@ -1,26 +1,15 @@
-const { MongoClient, ObjectId } = require('mongodb')
-const logger = require('../logger')
+const { ObjectId } = require('mongodb')
+const getConnection = require('./connect')
 
-const { DB_USER, DB_PASS, DB_URL, DB_NAME, NODE_ENV } = process.env
 // Connection url
-const connectionString = NODE_ENV !== 'development' ? `mongodb://${DB_USER}:${DB_PASS}@${DB_URL}` : `mongodb://${DB_URL}`
+const getCollection = async (colName, query, sort) => {
+  const queryFunc = db => db.collection(colName).find(query || {}).sort(sort).toArray()
+  return getConnection(queryFunc)
+}
 
-const getCollection = async (colName, query, isOne=false, sort) => {
-  let client
-  try {
-    client = await MongoClient.connect(connectionString, { useNewUrlParser: true })
-    const db = client.db(DB_NAME)
-
-    if (isOne) {
-      return await db.collection(colName).findOne(query)
-    }
-    const collection = db.collection(colName).find(query || {})
-    return sort ? await collection.sort(sort).toArray() : await collection.toArray()
-  } catch (e) {
-    logger.error('error', e)
-  } finally {
-    client.close()
-  }
+const getSingleCollection = async (colName, query) => {
+  const queryFunc = db => db.collection(colName).findOne(query)
+  return getConnection(queryFunc)
 }
 
 const getQuery = (args) => {
@@ -28,6 +17,7 @@ const getQuery = (args) => {
   if (id) {
     return { _id: ObjectId(id) }
   }
+  // THIS IS NOT CURRENTLY USED
   if (rest.length > 0) {
     const key = Object.keys(rest)[0]
     return {
@@ -47,6 +37,7 @@ const getSort = (sort) => {
 
 module.exports = {
   getCollection,
+  getSingleCollection,
   getQuery,
   getSort,
 }

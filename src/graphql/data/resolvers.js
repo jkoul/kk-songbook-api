@@ -1,4 +1,4 @@
-const { getCollection, getSort, getQuery } = require('../../mongo')
+const { getCollection, getSort, getQuery, getSingleCollection } = require('../../mongo')
 
 // Provide resolver functions for your schema fields
 module.exports = {
@@ -7,12 +7,12 @@ module.exports = {
       const query = getQuery({ ...args })
       const sortBlock = getSort(sort)
 
-      return await getCollection('songs', query, false, sortBlock)
+      return await getCollection('songs', query, sortBlock)
     },
     song: async (root, { id, ...args }) => {
       const query = getQuery({ id, ...args })
       
-      return await getCollection('songs', query, true)
+      return await getSingleCollection('songs', query)
     }
   },
 }
